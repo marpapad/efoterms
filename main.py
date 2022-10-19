@@ -17,5 +17,5 @@ config = vars(args)
 
 print(config)
  
-# efoPipe(**config).run()
+efoPipe(**config).run()
 
