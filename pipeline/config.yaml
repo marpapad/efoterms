@@ -1,11 +1,3 @@
-postgres:
-  db_efo:
-    host: localhost
-    user: postgres
-    password: intell1Pass
-    port: 5432
-    db: efo
-
 api:
   efo:
     url: https://www.ebi.ac.uk/ols/api/ontologies/efo/terms

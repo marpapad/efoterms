@@ -5,7 +5,6 @@ import yaml
 with open('pipeline/config.yaml', 'r') as file:
     config = yaml.safe_load(file)
 
-efodb = config['postgres']['db_efo']
 api = config['api']['efo']
 
 class efoPipe:
@@ -15,27 +14,40 @@ class efoPipe:
     
     """
     
-    def __init__(self,till_page):
+    def __init__(self,till_page,user,password,host,port,db):
         
         if not(isinstance(till_page,int) or till_page is None) or till_page<0:
            raise ValueError('upper limit is not properly defined') 
         
         self.till_page = till_page
+        self.user = user
+        self.password = password
+        self.host = host
+        self.port = port
+        self.db = db
         
     def run(self):
         
         till_page = self.till_page
         size = api['size']
         
+        efodb = {
+                 'host': self.host,
+                 'user': self.user,
+                 'password': self.password,
+                 'port': self.port,
+                 'db': self.db 
+                 }
+ 
         try:
             lp = LastPage(efodb)
             # fetch last page
             pages_last_row = lp.fetch()
             
-            if pages_last_row is not None :
-                print('start page: ',pages_last_row.page)
-            else:
-                print('no page has been loaded yet')
+            # if pages_last_row is not None :
+            #     print('start page: ',pages_last_row.page)
+            # else:
+            #     print('no page has been loaded yet')
             
             if pages_last_row is not None and till_page < pages_last_row.page:
                 raise ValueError('pages till given limit already load, try sth equal or greater than:' + str(pages_last_row.page))
