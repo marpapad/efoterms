@@ -1,7 +1,5 @@
-from pipeline.efo import *
-from pipeline.load import *
+from pipeline import *
 
-
-
-till_page = 3
+till_page = 11
+efoPipe(till_page).run()
 
