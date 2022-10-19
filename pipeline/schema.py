@@ -16,6 +16,8 @@ class Pages(Base):
     page = Column('page',Integer, nullable=False)
     elements = Column('elements',Integer, nullable=False)
     createdat = Column('createdat',DateTime, nullable=False)
+    
+    __table_args__ = (UniqueConstraint('page'),Index('page_idx','page'),)
 
     def __init__(self, page, elements, createdat):
         self.page = page
@@ -26,7 +28,7 @@ class Pages(Base):
         return "<Pages(page='{}', elements='{}', created={})>"\
                 .format(self.page, self.elements, self.createdat)
                 
-
+                
 class Term(Base):
     """
     EFO term table blueprint
@@ -61,6 +63,7 @@ class Term(Base):
     def __repr__(self):
         return "<Term(label='{}', iri='{}', is_obsolete='{}', term_replaced_by='{}', is_defining_ontology='{}', has_children='{}', is_root='{}', is_preferred_root='{}', created={})>"\
                 .format(self.label, self.iri, self.is_obsolete, self.term_replaced_by, self.is_defining_ontology, self.has_children, self.is_root, self.is_preferred_root, self.createdat)
+
                 
 class Description(Base):
     """
@@ -80,6 +83,7 @@ class Description(Base):
     
     def __repr__(self):
         return "<Description(description='%s')>" % self.description
+
     
 class Synonym(Base):
     """
@@ -99,7 +103,8 @@ class Synonym(Base):
         
     def __repr__(self):
         return "<Synonym(synonym='%s')>" % self.synonym   
-         
+
+        
 class Ontology(Base):
     """
     EFO term ontology table blueprint

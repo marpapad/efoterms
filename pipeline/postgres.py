@@ -5,6 +5,7 @@ from sqlalchemy.schema import CreateTable
 from sqlalchemy.exc import OperationalError
 from sqlalchemy import inspect
 from contextlib import contextmanager
+from sqlalchemy import update
 
 class ValidationError(Exception):
     def __init__(self, msg):
@@ -95,12 +96,31 @@ class PostgresConnector(PostgresURI):
             raise exc
     
     def fetch_lastrow(self,table_obj,table_name,session):
+        engine = self.engine()
+        if database_exists(engine.url) and self.teble_exists(table_name):
+            obj = session.query(table_obj).order_by(table_obj.id.desc()).first()
+        else:
+            obj = None
+        return obj
+    
+    # filter by single column and update attributes dynamically
+    def updatebycol(self,table_obj,table_name,session,attr,value,new_attibutes):
+        try:
+            
             engine = self.engine()
             if database_exists(engine.url) and self.teble_exists(table_name):
-                obj = session.query(table_obj).order_by(table_obj.id.desc()).first()
-            else:
-                obj = None
-            return obj
+                stmt = (
+                    update(table_obj).
+                    where(getattr(table_obj,attr)==value).
+                    values(new_attibutes)
+                    
+                )
+                session.execute(stmt)
+                
+        except Exception as exc:
+            raise exc
+
+
         
     
     

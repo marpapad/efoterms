@@ -1,6 +1,6 @@
 from datetime import datetime
-from postgres import *
-from schema import *
+from pipeline.postgres import *
+from pipeline.schema import *
 import requests
 
 class efopage:
@@ -47,27 +47,6 @@ class efopage:
         except requests.exceptions.RequestException as err:
             print ("Error:",err)
             
-            
-    def logit(self,psqlconfig,elements):
-        
-        try :
-            page_attr = {
-                'page' : self.page,
-                'elements' : elements,
-                'createdat' : datetime.now()
-            }
-            
-            page_obj = Pages(**page_attr)
-            
-            Session = PostgresConnector(psqlconfig).Session()
-            
-            with Session as s:
-                
-                s.add(page_obj)
-
-        except Exception as e:
-            
-            raise e 
 
 class efo_db:
     
@@ -318,7 +297,46 @@ class LastPage:
         except Exception as e:
             
             raise e 
+    
+    def update(self,page,new_attributes):
+        
+        try: 
+            
+            psqlconfig = self.psqlconfig
+            
+            Session = PostgresConnector(psqlconfig).Session(expire_on_commit=False)
+            
+            with Session as s:
                 
+                PostgresConnector(psqlconfig).updatebycol(Pages,'pages',s,'page',page,new_attributes)
+        
+        except Exception as e:
+            
+            raise e         
+    
+    def insert(self,page,elements):
+        
+        try :
+            
+            psqlconfig = self.psqlconfig
+            
+            page_attr = {
+                'page' : page,
+                'elements' : elements,
+                'createdat' : datetime.now()
+            }
+            
+            page_obj = Pages(**page_attr)
+            
+            Session = PostgresConnector(psqlconfig).Session()
+            
+            with Session as s:
+                
+                s.add(page_obj)
+
+        except Exception as e:
+            
+            raise e 
         
         
         
