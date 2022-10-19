@@ -1,11 +1,62 @@
 from datetime import datetime
 from pipeline.efo import *
 import yaml
+import requests
 
 with open('pipeline/config.yaml', 'r') as file:
     config = yaml.safe_load(file)
 
 api = config['api']['efo']
+
+class efoPage:
+    
+    """
+    Fetch Efo terms page through api &
+    Log successfull inserts per page
+    
+    """
+    
+    def __init__(self,page):
+        
+        if not isinstance(api['size'],int) or api['size']<1 or api['size']>500:
+           raise ValueError('size not properly defined') 
+        
+        if not isinstance(page,int):
+           raise ValueError('page number not properly defined') 
+        
+        self.page = page
+        self.efopage = api['url'] + '?page={page}&size={size}'.format(page=page,size=api['size'])
+        
+    def fetch(self):
+        
+        try:
+        
+            fetchpage = requests.get(self.efopage,timeout=3) 
+            pagejson = fetchpage.json()
+            if '_embedded' in pagejson.keys():
+                
+                response = {
+                'terms' : pagejson['_embedded']['terms'],
+                'pages' : pagejson['page']['totalPages']
+                }
+                return response
+            else:
+                print('Not available page')   
+            
+        
+        except requests.exceptions.HTTPError as errh:
+            print ("Http Error:",errh)
+            
+        except requests.exceptions.ConnectionError as errc:
+            print ("Error Connecting:",errc)
+            
+        except requests.exceptions.Timeout as errt:
+            print ("Timeout Error:",errt)
+            
+        except requests.exceptions.RequestException as err:
+            print ("Error:",err)
+            
+
 
 class efoPipe:
         
@@ -82,7 +133,7 @@ class efoPipe:
                     e = size * (-1) 
                     
                 # page retrieval
-                efopg = efopage(**{**api,'page': p})
+                efopg = efoPage(p)
                 page_elements = efopg.fetch()
                 terms = page_elements['terms'][e:]
                 # term and its attributes load & pages loaded update

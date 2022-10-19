@@ -1,52 +1,6 @@
 from datetime import datetime
 from pipeline.postgres import *
 from pipeline.schema import *
-import requests
-
-class efopage:
-    
-    """
-    Fetch Efo terms page through api &
-    Log successfull inserts per page
-    
-    """
-    
-    def __init__(self,url,size,page):
-        
-        if not isinstance(size,int) or size<1 or size>500:
-           raise ValueError('size not properly defined') 
-        
-        if not isinstance(page,int):
-           raise ValueError('page number not properly defined') 
-        
-        self.page = page
-        self.efopage = url + '?page={page}&size={size}'.format(page=page,size=size)
-        
-    def fetch(self):
-        
-        try:
-        
-            fetchpage = requests.get(self.efopage,timeout=3) 
-            pagejson = fetchpage.json()
-            response = {
-            'terms' : pagejson['_embedded']['terms'],
-            'pages' : pagejson['page']['totalPages']
-            }
-            
-            return response
-        
-        except requests.exceptions.HTTPError as errh:
-            print ("Http Error:",errh)
-            
-        except requests.exceptions.ConnectionError as errc:
-            print ("Error Connecting:",errc)
-            
-        except requests.exceptions.Timeout as errt:
-            print ("Timeout Error:",errt)
-            
-        except requests.exceptions.RequestException as err:
-            print ("Error:",err)
-            
 
 class efo_db:
     

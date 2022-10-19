@@ -1,4 +1,3 @@
-from .efo import efopage
-from .load import efoPipe
+from .load import efoPipe,efoPage
 
-__all__ = ['efopage', 'efoPipe']
+__all__ = ['efoPage', 'efoPipe']
