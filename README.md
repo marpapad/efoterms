@@ -5,6 +5,7 @@ Tested with:
   - ubuntu 22.04
   - postgresql 14 installed
   - python 3.10 installed
+  - pip3 22.0.2 installed
   
  user must have priviledges: create database, create table, select, update, insert
  user must have a password
