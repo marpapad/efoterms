@@ -26,7 +26,7 @@ $ ./efo.sh [-hs,--host= HOST, Optional, default: localhost] </br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-P,--password = PASSWORD, Optional, Required] </br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-pg,--till_page = PAGES TO BE RETRIEVED UPPER LIMIT, Optional, default: last available page] <\br>
 
-<h3>example:</h3>
-<p>if we want to load into postres db efo (locally hosted) the terms till the page 20 using the user postgres whose password is intell1Pass</p>
+<h3>example</h3>
+<p>if we want to load into postres db efo (locally hosted) the terms till the page 20 using the user postgres whose password is intell1Pass we run the following:</p>
 $ ./efo.sh -P intell1Pass -pg 20
 
