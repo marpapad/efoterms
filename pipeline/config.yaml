@@ -1,0 +1,4 @@
+api:
+  efo:
+    url: https://www.ebi.ac.uk/ols/api/ontologies/efo/terms
+    size: 50
