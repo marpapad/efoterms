@@ -12,8 +12,8 @@ Tested with:
  
  What it does:
   - installs necessary python packages (requirements.txt)
-  - run main.py which does the following:
-    * creates db an schema if not already exist (default efo, else the db given by the user)
+  - runs main.py which does the following:
+    * creates db and schema if not already exists (default efo, else the db given by the user)
     * loads the terms and their attibutes from the page and element not inserted in the db when executed the last time till the page defined by the user, if the upper limit is not defined then loads every available term
 
 clone project
