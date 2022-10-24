@@ -7,7 +7,7 @@ Tested with:
   - python 3.10 installed
   - pip3 22.0.2 installed
   
- user must have priviledges: create database, create table, select, update, insert
+ user must have priviledges: create database, create table, select, update, insert </br>
  user must have a password
  
  What it does:
